@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Surpresa do Amor 💕</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff6b9d, #c44569, #f8b500);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100px 100px, 150px 150px, 80px 80px;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            line-height: 1.2;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .start-btn {
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #c44569, #ff6b9d);
+        }
+
+        .cart-container {
+            position: absolute;
+            left: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: left 3s ease-in-out;
+        }
+
+        .cart-container.moving {
+            left: calc(50% - 50px);
+        }
+
+        .cart-image, .box-image {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .box-image {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .box-image.show {
+            display: block;
+        }
+
+        .box-image.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .box-image.opening {
+            animation: opening 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes opening {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1.5) rotate(0deg); opacity: 0; }
+        }
+
+        .heart-explosion {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff6b9d;
+            font-size: 2rem;
+            animation: heartFloat 2s ease-out forwards;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .surprise-items {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .surprise-item {
+            position: absolute;
+            font-size: 2rem;
+            animation: itemExplosion 3s ease-out forwards;
+            transform-origin: center;
+        }
+
+        @keyframes itemExplosion {
+            0% {
+                transform: scale(0) rotate(0deg) translate(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(1.2) rotate(180deg) translate(var(--final-x), var(--final-y));
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8) rotate(720deg) translate(var(--final-x), var(--final-y));
+                opacity: 0;
+            }
+        }
+
+        @keyframes surpriseReveal {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .surprise-items {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .surprise-item {
+            position: absolute;
+            font-size: 2rem;
+            animation: itemExplosion 3s ease-out forwards;
+            transform-origin: center;
+        }
+
+        @keyframes itemExplosion {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-item {
+            animation: floatAround 4s ease-in-out infinite;
+        }
+
+        @keyframes floatAround {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(120deg);
+            }
+            67% {
+                transform: translateY(10px) rotate(240deg);
+            }
+        }
+
+        .surprise-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: surpriseReveal 2s ease-in-out forwards;
+            text-align: center;
+            line-height: 1.3;
+            z-index: 200;
+        }
+
+        .click-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #c44569;
+            display: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <h1 class="title">
+            🎁 Caixa Misteriosa do Amor 💕<br>
+            <span style="font-size: 0.6em;">Será que você consegue abrir o coração? 😉</span>
+        </h1>
+        <button class="start-btn" onclick="startGame()">💖 Começar a Aventura 💖</button>
+    </div>
+
+    <div class="cart-container" id="cartContainer">
+        <img src="images/box-in-cart.png" 
+             class="cart-image" id="cartImage" alt="Carrinho com caixa">
+        <img src="images/closed-box.png"
+             class="box-image" id="boxImage" alt="Caixa fechada">
+    </div>
+
+    <div class="click-counter" id="clickCounter">
+        Cliques: <span id="clickCount">0</span>/5
+    </div>
+
+    <script>
+        let gameState = 'start'; // start, moving, waiting, clicking, opened
+        let clickCount = 0;
+        let clickTimer = null;
+        let audioSynths = {};
+
+        // Inicializar Tone.js com diferentes sintetizadores
+        async function initAudio() {
+            await Tone.start();
+            
+            // Sintetizador para som de carrinho (ruído de rodas)
+            audioSynths.cart = new Tone.NoiseSynth({
+                noise: { type: "brown" },
+                envelope: { attack: 0.1, decay: 0.3, sustain: 0.2, release: 0.5 }
+            }).toDestination();
+
+            // Sintetizador para som de batida na caixa
+            audioSynths.hit = new Tone.MembraneSynth({
+                pitchDecay: 0.05,
+                octaves: 2,
+                oscillator: { type: "sine" },
+                envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4 }
+            }).toDestination();
+
+            // Sintetizador para som de abertura da caixa
+            audioSynths.open = new Tone.Synth({
+                oscillator: { type: "sawtooth" },
+                envelope: { attack: 0.1, decay: 0.3, sustain: 0.4, release: 0.8 }
+            }).toDestination();
+
+            // Filtro para som de papel
+            audioSynths.paperFilter = new Tone.Filter(800, "highpass").toDestination();
+            audioSynths.paper = new Tone.NoiseSynth({
+                noise: { type: "white" },
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.4 }
+            }).connect(audioSynths.paperFilter);
+        }
+
+        // Sons realistas
+        function playMovingSound() {
+            if (audioSynths.cart) {
+                // Som de carrinho andando - ruído marrom com variações
+                audioSynths.cart.triggerAttack();
+                setTimeout(() => audioSynths.cart.triggerRelease(), 2800);
+                
+                // Adicionar sons de "clique" das rodas ocasionalmente
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        if (audioSynths.hit) {
+                            audioSynths.hit.triggerAttackRelease("C2", "0.05n");
+                        }
+                    }, i * 350 + Math.random() * 100);
+                }
+            }
+        }
+
+        function playClickSound() {
+            if (audioSynths.hit && audioSynths.paper) {
+                // Som de batida na caixa de papelão
+                audioSynths.hit.triggerAttackRelease("F2", "0.1n");
+                
+                // Som de papel amassando
+                setTimeout(() => {
+                    audioSynths.paper.triggerAttack();
+                    setTimeout(() => audioSynths.paper.triggerRelease(), 150);
+                }, 50);
+            }
+        }
+
+        function playOpenSound() {
+            if (audioSynths.open && audioSynths.paper) {
+                // Som de caixa abrindo - rangido e papel
+                audioSynths.open.triggerAttackRelease("G3", "0.8n");
+                
+                // Som de papel se movendo
+                setTimeout(() => {
+                    audioSynths.paper.triggerAttack();
+                    setTimeout(() => audioSynths.paper.triggerRelease(), 600);
+                }, 200);
+                
+                // Som adicional de "pop" da abertura
+                setTimeout(() => {
+                    if (audioSynths.hit) {
+                        audioSynths.hit.triggerAttackRelease("A3", "0.2n");
+                    }
+                }, 400);
+            }
+        }
+
+        async function startGame() {
+            await initAudio();
+            
+            gameState = 'moving';
+            
+            // Esconder título e botão
+            document.getElementById('mainContainer').classList.add('hidden');
+            
+            // Mostrar carrinho e iniciar movimento
+            const cartContainer = document.getElementById('cartContainer');
+            cartContainer.style.display = 'block';
+            
+            // Som de movimento
+            playMovingSound();
+            
+            setTimeout(() => {
+                cartContainer.classList.add('moving');
+            }, 100);
+            
+            // Após 3 segundos, trocar para a caixa
+            setTimeout(() => {
+                document.getElementById('cartImage').style.display = 'none';
+                document.getElementById('boxImage').classList.add('show');
+                document.getElementById('clickCounter').style.display = 'block';
+                gameState = 'waiting';
+            }, 3100);
+        }
+
+        function handleBoxClick() {
+            if (gameState === 'waiting' || gameState === 'clicking') {
+                playClickSound();
+                
+                if (gameState === 'waiting') {
+                    gameState = 'clicking';
+                    clickCount = 0;
+                    clickTimer = Date.now();
+                }
+                
+                clickCount++;
+                document.getElementById('clickCount').textContent = clickCount;
+                
+                // Efeito de vibração
+                document.getElementById('boxImage').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('boxImage').classList.remove('shake');
+                }, 500);
+                
+                // Verificar se completou 5 clicks em 1 segundo
+                if (clickCount >= 5) {
+                    const timeDiff = Date.now() - clickTimer;
+                    if (timeDiff <= 1000) {
+                        openBox();
+                    } else {
+                        // Reset se passou de 1 segundo
+                        clickCount = 0;
+                        document.getElementById('clickCount').textContent = clickCount;
+                        gameState = 'waiting';
+                    }
+                }
+                
+                // Reset após 1.5 segundos de inatividade
+                setTimeout(() => {
+                    if (gameState === 'clicking' && (Date.now() - clickTimer) > 1500) {
+                        clickCount = 0;
+                        document.getElementById('clickCount').textContent = clickCount;
+                        gameState = 'waiting';
+                    }
+                }, 1600);
+            }
+        }
+
+        function openBox() {
+            gameState = 'opened';
+            playOpenSound();
+            
+            const boxImage = document.getElementById('boxImage');
+            boxImage.classList.add('opening');
+            boxImage.src = 'images/open-box.png';
+            
+            // Esconder contador
+            document.getElementById('clickCounter').style.display = 'none';
+            
+            // Criar explosão de itens da caixa
+            createSurpriseExplosion();
+            
+            // Criar explosão de corações
+            setTimeout(() => {
+                createHeartExplosion();
+            }, 800);
+            
+            // Mostrar mensagem de surpresa
+            setTimeout(() => {
+                const surprise = document.createElement('div');
+                surprise.className = 'surprise-message';
+                surprise.innerHTML = '💕 PARABÉNS! 💕<br>Você abriu o coração!<br>🎉 Feliz Dia dos Namorados! 🎉';
+                document.body.appendChild(surprise);
+            }, 1500);
+        }
+
+        function createSurpriseExplosion() {
+            const surpriseItems = [
+                '🎁', '💝', '🌹', '💌', '🍫', '🧸', '💎', '🎀', 
+                '🌺', '💐', '🦋', '⭐', '✨', '🎊', '🎉', '💖',
+                '🍰', '🥂', '🎵', '🎶', '🌟', '💫', '🔮', '🌈'
+            ];
+            
+            const container = document.getElementById('cartContainer');
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Criar 30 itens que saem da caixa
+            for (let i = 0; i < 30; i++) {
+                const item = document.createElement('div');
+                item.className = 'surprise-item';
+                
+                // Escolher item aleatório
+                const randomItem = surpriseItems[Math.floor(Math.random() * surpriseItems.length)];
+                item.textContent = randomItem;
+                
+                // Posição inicial (centro da caixa)
+                item.style.left = centerX + 'px';
+                item.style.top = centerY + 'px';
+                
+                // Calcular posição final aleatória
+                const angle = (Math.PI * 2 * Math.random());
+                const distance = 100 + Math.random() * 300;
+                const finalX = centerX + Math.cos(angle) * distance;
+                const finalY = centerY + Math.sin(angle) * distance;
+                
+                // Aplicar transformação
+                item.style.setProperty('--final-x', (finalX - centerX) + 'px');
+                item.style.setProperty('--final-y', (finalY - centerY) + 'px');
+                
+                // Adicionar variação no timing
+                item.style.animationDelay = (i * 50) + 'ms';
+                
+                document.body.appendChild(item);
+                
+                // Após a animação inicial, alguns itens continuam flutuando
+                setTimeout(() => {
+                    if (Math.random() > 0.7) {
+                        item.classList.remove('surprise-item');
+                        item.classList.add('floating-item');
+                        item.style.position = 'fixed';
+                        item.style.left = finalX + 'px';
+                        item.style.top = finalY + 'px';
+                        
+                        // Remover item flutuante após mais tempo
+                        setTimeout(() => {
+                            item.remove();
+                        }, 8000);
+                    } else {
+                        item.remove();
+                    }
+                }, 3000);
+            }
+        }
+
+        function createHeartExplosion() {
+            const container = document.getElementById('cartContainer');
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = '💖';
+                heart.style.left = centerX + 'px';
+                heart.style.top = centerY + 'px';
+                
+                // Posição aleatória
+                const angle = (Math.PI * 2 * i) / 20;
+                const distance = 50 + Math.random() * 100;
+                const finalX = centerX + Math.cos(angle) * distance;
+                const finalY = centerY + Math.sin(angle) * distance;
+                
+                heart.style.left = finalX + 'px';
+                heart.style.top = finalY + 'px';
+                
+                document.body.appendChild(heart);
+                
+                // Remover após animação
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+        }
+
+        // Event listener para clique na caixa
+        document.getElementById('boxImage').addEventListener('click', handleBoxClick);
+    </script>
+</body>
+</html>

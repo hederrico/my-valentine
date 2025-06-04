@@ -81,10 +81,54 @@
 
         .cart-container {
             position: absolute;
-            left: -200px;
+            left: -90px;
             top: 50%;
-            transform: translateY(-50%);
-            transition: left 3s ease-in-out;
+            transform: translateY(-50%) rotate(0deg);
+            transition: left 4100ms ease-in-out;
+            transform-origin: bottom center;
+            animation: moverCarrinho 4800ms ease-in-out forwards;
+            user-select: none;
+        }
+
+        @keyframes moverCarrinho {
+            0% {
+                transform: translateY(-50%) rotate(0deg);
+            }
+            40% {
+                transform: translateY(-50%) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50%) rotate(2deg);
+            }
+            60% {
+                transform: translateY(-50%) rotate(0deg);
+            }
+            70% {
+                transform: translateY(-50%) rotate(3deg);
+            }
+            80% {
+                transform: translateY(-50%) rotate(0deg);
+            }
+            95% {
+                transform-origin: center;
+                transform: translateY(-50%) rotate(45deg);
+            }
+            100% {
+                transform-origin: center;
+                transform: translateY(-50%) rotate(90deg);
+            }
+        }
+
+        @keyframes rotateGrowThenReset {
+            0% {
+            transform: translateY(-50%) rotate(0deg) scale(1);
+            }
+            80% {
+            transform: translateY(-50%) rotate(10800deg) scale(5);
+            }
+            100% {
+            transform: translateY(-50%) rotate(0deg) scale(1);
+            }
         }
 
         .cart-container.moving {
@@ -126,11 +170,6 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
-        @keyframes opening {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2) rotate(5deg); }
-            100% { transform: scale(1.5) rotate(0deg); opacity: 0; }
-        }
 
         .heart-explosion {
             position: absolute;
@@ -275,6 +314,7 @@
     </style>
 </head>
 <body>
+    <audio id="rollingAudio" src="/sounds/rolling-wheel-sound.mp3"></audio>
     <div class="container" id="mainContainer">
         <h1 class="title">
             🎁 Caixa Misteriosa do Amor 💕<br>
@@ -298,117 +338,28 @@
         let gameState = 'start'; // start, moving, waiting, clicking, opened
         let clickCount = 0;
         let clickTimer = null;
-        let audioSynths = {};
 
-        // Inicializar Tone.js com diferentes sintetizadores
-        async function initAudio() {
-            await Tone.start();
-            
-            // Sintetizador para som de carrinho (ruído de rodas)
-            audioSynths.cart = new Tone.NoiseSynth({
-                noise: { type: "brown" },
-                envelope: { attack: 0.1, decay: 0.3, sustain: 0.2, release: 0.5 }
-            }).toDestination();
-
-            // Sintetizador para som de batida na caixa
-            audioSynths.hit = new Tone.MembraneSynth({
-                pitchDecay: 0.05,
-                octaves: 2,
-                oscillator: { type: "sine" },
-                envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4 }
-            }).toDestination();
-
-            // Sintetizador para som de abertura da caixa
-            audioSynths.open = new Tone.Synth({
-                oscillator: { type: "sawtooth" },
-                envelope: { attack: 0.1, decay: 0.3, sustain: 0.4, release: 0.8 }
-            }).toDestination();
-
-            // Filtro para som de papel
-            audioSynths.paperFilter = new Tone.Filter(800, "highpass").toDestination();
-            audioSynths.paper = new Tone.NoiseSynth({
-                noise: { type: "white" },
-                envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.4 }
-            }).connect(audioSynths.paperFilter);
-        }
-
-        // Sons realistas
         function playMovingSound() {
-            if (audioSynths.cart) {
-                // Som de carrinho andando - ruído marrom com variações
-                audioSynths.cart.triggerAttack();
-                setTimeout(() => audioSynths.cart.triggerRelease(), 2800);
-                
-                // Adicionar sons de "clique" das rodas ocasionalmente
-                for (let i = 0; i < 8; i++) {
-                    setTimeout(() => {
-                        if (audioSynths.hit) {
-                            audioSynths.hit.triggerAttackRelease("C2", "0.05n");
-                        }
-                    }, i * 350 + Math.random() * 100);
+            const audio = document.getElementById('rollingAudio');
+            audio.currentTime = 4;
+            audio.play();
+
+            const pararNo12 = () => {
+                if (audio.currentTime >= 12) {
+                audio.pause();
+                audio.removeEventListener('timeupdate', pararNo12);
                 }
-            }
+            };
+
+            audio.addEventListener('timeupdate', pararNo12);
         }
 
         function playClickSound() {
-            if (audioSynths.hit && audioSynths.paper) {
-                // Som de batida na caixa de papelão
-                audioSynths.hit.triggerAttackRelease("F2", "0.1n");
-                
-                // Som de papel amassando
-                setTimeout(() => {
-                    audioSynths.paper.triggerAttack();
-                    setTimeout(() => audioSynths.paper.triggerRelease(), 150);
-                }, 50);
-            }
+           
         }
 
         function playOpenSound() {
-            if (audioSynths.open && audioSynths.paper) {
-                // Som de caixa abrindo - rangido e papel
-                audioSynths.open.triggerAttackRelease("G3", "0.8n");
-                
-                // Som de papel se movendo
-                setTimeout(() => {
-                    audioSynths.paper.triggerAttack();
-                    setTimeout(() => audioSynths.paper.triggerRelease(), 600);
-                }, 200);
-                
-                // Som adicional de "pop" da abertura
-                setTimeout(() => {
-                    if (audioSynths.hit) {
-                        audioSynths.hit.triggerAttackRelease("A3", "0.2n");
-                    }
-                }, 400);
-            }
-        }
 
-        async function startGame() {
-            await initAudio();
-            
-            gameState = 'moving';
-            
-            // Esconder título e botão
-            document.getElementById('mainContainer').classList.add('hidden');
-            
-            // Mostrar carrinho e iniciar movimento
-            const cartContainer = document.getElementById('cartContainer');
-            cartContainer.style.display = 'block';
-            
-            // Som de movimento
-            playMovingSound();
-            
-            setTimeout(() => {
-                cartContainer.classList.add('moving');
-            }, 100);
-            
-            // Após 3 segundos, trocar para a caixa
-            setTimeout(() => {
-                document.getElementById('cartImage').style.display = 'none';
-                document.getElementById('boxImage').classList.add('show');
-                document.getElementById('clickCounter').style.display = 'block';
-                gameState = 'waiting';
-            }, 3100);
         }
 
         function handleBoxClick() {
@@ -424,23 +375,29 @@
                 clickCount++;
                 document.getElementById('clickCount').textContent = clickCount;
                 
-                // Efeito de vibração
-                document.getElementById('boxImage').classList.add('shake');
-                setTimeout(() => {
-                    document.getElementById('boxImage').classList.remove('shake');
-                }, 500);
+                const cartContainer = document.getElementById('cartContainer');
+                const angles = [0, 90, -90, 180, -180, 270, -270, 360, -360];
+                let currentAngle = cartContainer.dataset.angle ? parseInt(cartContainer.dataset.angle) : 0;
+                let possibleAngles = angles.filter(a => a !== currentAngle);
+                let angle = possibleAngles[Math.floor(Math.random() * possibleAngles.length)];
+                cartContainer.style.transition = 'transform 0.5s cubic-bezier(.4,1.4,.6,1)';
+                cartContainer.style.transform = `translateY(-65%) rotate(${angle}deg)`;
+                cartContainer.dataset.angle = angle;
                 
-                // Verificar se completou 5 clicks em 1 segundo
+                
                 if (clickCount >= 5) {
                     const timeDiff = Date.now() - clickTimer;
                     if (timeDiff <= 1000) {
                         openBox();
                     } else {
-                        // Reset se passou de 1 segundo
                         clickCount = 0;
                         document.getElementById('clickCount').textContent = clickCount;
                         gameState = 'waiting';
                     }
+                } else {
+                    setTimeout(() => {
+                        cartContainer.style.transform = `translateY(-50%) rotate(${angle}deg) scale(1)`;
+                    }, 200);
                 }
                 
                 // Reset após 1.5 segundos de inatividade
@@ -458,28 +415,33 @@
             gameState = 'opened';
             playOpenSound();
             
-            const boxImage = document.getElementById('boxImage');
-            boxImage.classList.add('opening');
-            boxImage.src = 'images/open-box.png';
+            const cartContainer = document.getElementById('cartContainer');
+            cartContainer.style.animation = 'rotateGrowThenReset 5s ease-in-out forwards';
+
+            setTimeout(() => {
+                const boxImage = document.getElementById('boxImage');
+                boxImage.classList.add('opening');
+                boxImage.src = 'images/open-box.png';
+            }, 4900);
             
             // Esconder contador
             document.getElementById('clickCounter').style.display = 'none';
             
-            // Criar explosão de itens da caixa
-            createSurpriseExplosion();
+            // // Criar explosão de itens da caixa
+            // createSurpriseExplosion();
             
-            // Criar explosão de corações
-            setTimeout(() => {
-                createHeartExplosion();
-            }, 800);
+            // // Criar explosão de corações
+            // setTimeout(() => {
+            //     createHeartExplosion();
+            // }, 800);
             
-            // Mostrar mensagem de surpresa
-            setTimeout(() => {
-                const surprise = document.createElement('div');
-                surprise.className = 'surprise-message';
-                surprise.innerHTML = '💕 PARABÉNS! 💕<br>Você abriu o coração!<br>🎉 Feliz Dia dos Namorados! 🎉';
-                document.body.appendChild(surprise);
-            }, 1500);
+            // // Mostrar mensagem de surpresa
+            // setTimeout(() => {
+            //     const surprise = document.createElement('div');
+            //     surprise.className = 'surprise-message';
+            //     surprise.innerHTML = '💕 PARABÉNS! 💕<br>Você abriu o coração!<br>🎉 Feliz Dia dos Namorados! 🎉';
+            //     document.body.appendChild(surprise);
+            // }, 1500);
         }
 
         function createSurpriseExplosion() {
@@ -573,8 +535,32 @@
             }
         }
 
-        // Event listener para clique na caixa
         document.getElementById('boxImage').addEventListener('click', handleBoxClick);
+
+        async function startGame() {
+            gameState = 'moving';
+            
+            document.getElementById('mainContainer').classList.add('hidden');
+            
+            const cartContainer = document.getElementById('cartContainer');
+            cartContainer.style.display = 'block';
+            
+            playMovingSound();
+            
+            setTimeout(() => {
+                cartContainer.classList.add('moving');
+            }, 100);
+            
+            setTimeout(() => {
+                document.getElementById('cartImage').style.display = 'none';
+                cartContainer.style.animation = 'none';
+                cartContainer.style.transformOrigin = 'center';
+                cartContainer.style.transform = 'translateY(-50%) rotate(90deg)';
+                document.getElementById('boxImage').classList.add('show');
+                document.getElementById('clickCounter').style.display = 'block';
+                gameState = 'waiting';
+            }, 4000);
+        }
     </script>
 </body>
 </html>

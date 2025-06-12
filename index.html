@@ -4,516 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💕 Surpresa do Amor 💕</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(135deg, #ff6b9d, #c44569, #f8b500);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-                radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 100px 100px, 150px 150px, 80px 80px;
-            pointer-events: none;
-        }
-
-        .container {
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .title {
-            font-size: 3.5rem;
-            color: #fff;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-            margin-bottom: 2rem;
-            animation: pulse 2s infinite;
-            line-height: 1.2;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .start-btn {
-            font-size: 1.5rem;
-            padding: 15px 40px;
-            background: linear-gradient(45deg, #ff6b9d, #c44569);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(45deg, #c44569, #ff6b9d);
-        }
-
-        .cart-container {
-            position: absolute;
-            left: -90px;
-            top: 50%;
-            transform: translateY(-50%) rotate(0deg);
-            transition: left 4100ms ease-in-out;
-            transform-origin: bottom center;
-            animation: moverCarrinho 4800ms ease-in-out forwards;
-            user-select: none;
-            z-index: 2;
-        }
-
-        @keyframes moverCarrinho {
-            0% {
-                transform: translateY(-50%) rotate(0deg);
-            }
-            40% {
-                transform: translateY(-50%) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-50%) rotate(2deg);
-            }
-            60% {
-                transform: translateY(-50%) rotate(0deg);
-            }
-            70% {
-                transform: translateY(-50%) rotate(3deg);
-            }
-            80% {
-                transform: translateY(-50%) rotate(0deg);
-            }
-            95% {
-                transform-origin: center;
-                transform: translateY(-50%) rotate(45deg);
-            }
-            100% {
-                transform-origin: center;
-                transform: translateY(-50%) rotate(90deg);
-            }
-        }
-
-        @keyframes rotateGrowThenReset {
-            0% {
-            transform: translateY(-50%) rotate(0deg) scale(1);
-            }
-            80% {
-            transform: translateY(-50%) rotate(10800deg) scale(5);
-            }
-            100% {
-            transform: translateY(-50%) rotate(0deg) scale(1);
-            }
-        }
-
-        .cart-container.moving {
-            left: calc(50% - 50px);
-        }
-
-        .cart-image, .box-image {
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .box-image {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .box-image.show {
-            display: block;
-        }
-
-        .box-image.shake {
-            -webkit-animation: shake 0.3s linear infinite both;
-            animation: shake 0.3s linear infinite both;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @-webkit-keyframes shake {
-            0% {
-                -webkit-transform: translate(0);
-                        transform: translate(0);
-            }
-            20% {
-                -webkit-transform: translate(-2px, 2px);
-                        transform: translate(-2px, 2px);
-            }
-            40% {
-                -webkit-transform: translate(-2px, -2px);
-                        transform: translate(-2px, -2px);
-            }
-            60% {
-                -webkit-transform: translate(2px, 2px);
-                        transform: translate(2px, 2px);
-            }
-            80% {
-                -webkit-transform: translate(2px, -2px);
-                        transform: translate(2px, -2px);
-            }
-            100% {
-                -webkit-transform: translate(0);
-                        transform: translate(0);
-            }
-        }
-
-        @keyframes shake {
-            0% {
-                -webkit-transform: translate(0);
-                        transform: translate(0);
-            }
-            20% {
-                -webkit-transform: translate(-2px, 2px);
-                        transform: translate(-2px, 2px);
-            }
-            40% {
-                -webkit-transform: translate(-2px, -2px);
-                        transform: translate(-2px, -2px);
-            }
-            60% {
-                -webkit-transform: translate(2px, 2px);
-                        transform: translate(2px, 2px);
-            }
-            80% {
-                -webkit-transform: translate(2px, -2px);
-                        transform: translate(2px, -2px);
-            }
-            100% {
-                -webkit-transform: translate(0);
-                        transform: translate(0);
-            }
-        }
-
-        .heart-explosion {
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .heart {
-            position: absolute;
-            color: #ff6b9d;
-            font-size: 2rem;
-            animation: heartFloat 2s ease-out forwards;
-        }
-
-        @keyframes heartFloat {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(0.5);
-                opacity: 0;
-            }
-        }
-
-        .surprise-items {
-            position: absolute;
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        .surprise-item {
-            position: absolute;
-            font-size: 2rem;
-            animation: itemExplosion 3s ease-out forwards;
-            transform-origin: center;
-        }
-
-        @keyframes itemExplosion {
-            0% {
-                transform: scale(0) rotate(0deg) translate(0, 0);
-                opacity: 1;
-            }
-            20% {
-                transform: scale(1.2) rotate(180deg) translate(var(--final-x), var(--final-y));
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0.8) rotate(720deg) translate(var(--final-x), var(--final-y));
-                opacity: 0;
-            }
-        }
-
-        @keyframes surpriseReveal {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        .surprise-items {
-            position: absolute;
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        .surprise-item {
-            position: absolute;
-            font-size: 2rem;
-            animation: itemExplosion 3s ease-out forwards;
-            transform-origin: center;
-        }
-
-        @keyframes itemExplosion {
-            0% {
-                transform: scale(0) rotate(0deg);
-                opacity: 1;
-            }
-            20% {
-                transform: scale(1.2) rotate(180deg);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0.8) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        .floating-item {
-            -webkit-animation: pulsate-fwd 2s ease-in-out infinite both;
-	        animation: pulsate-fwd 2s ease-in-out infinite both;
-        }
-
-        @-webkit-keyframes pulsate-fwd {
-            0% {
-                -webkit-transform: scale(1);
-                        transform: scale(1);
-            }
-            50% {
-                -webkit-transform: scale(1.1);
-                        transform: scale(1.1);
-            }
-            100% {
-                -webkit-transform: scale(1);
-                        transform: scale(1);
-            }
-        }
-        @keyframes pulsate-fwd {
-            0% {
-                -webkit-transform: scale(1);
-                        transform: scale(1);
-            }
-            50% {
-                -webkit-transform: scale(1.1);
-                        transform: scale(1.1);
-            }
-            100% {
-                -webkit-transform: scale(1);
-                        transform: scale(1);
-            }
-        }
-
-        .surprise-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: #fff;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            animation: surpriseReveal 2s ease-in-out forwards;
-            text-align: center;
-            line-height: 1.3;
-            z-index: 200;
-        }
-
-        .click-counter {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            color: #c44569;
-            display: none;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .love-image {
-            width: 50px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            display: none;
-            cursor: pointer;
-            transition: all 300ms ease-in-out;
-        }
-
-        .love-image.floating-item:hover {
-            transform: scale(1.5);
-        }
-
-        .love-image.image-in-focus {
-            left: calc(50% - (max(25vw, 600px) / 2) + 20px) !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            width: calc(5vw + (max(25vw, 600px) / 4));
-        }
-
-        .glass-morph {
-            background: rgba(255,255,255,0.18);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 32px;
-            border: 1.5px solid rgba(255,255,255,0.28);
-            width: max(25vw, 600px);
-            height: max(20vh, 400px);
-            transform: scale(0);
-            position: absolute;
-            transition: transform 3s ease-in-out;
-        }
-
-        .glass-morph::before {
-            content: '';
-            position: absolute;
-            top: -400%;
-            left: -400%;
-            width: 1000vw;
-            height: 1000vh;
-            background: rgba(31, 38, 135, 0.08);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .scale-in-center {
-            -webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-            animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-        }
-
-        @-webkit-keyframes scale-in-center {
-            0% {
-                -webkit-transform: scale(0);
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                -webkit-transform: scale(1);
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes scale-in-center {
-        0% {
-            -webkit-transform: scale(0);
-            transform: scale(0);
-            opacity: 1;
-        }
-        100% {
-            -webkit-transform: scale(1);
-            transform: scale(1);
-            opacity: 1;
-        }
-        }
-
-        .scale-out-center {
-            -webkit-animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-            animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-        }
-        
-        @-webkit-keyframes scale-out-center {
-            0% {
-                -webkit-transform: scale(1);
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                -webkit-transform: scale(0);
-                transform: scale(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes scale-out-center {
-            0% {
-                -webkit-transform: scale(1);
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                -webkit-transform: scale(0);
-                transform: scale(0);
-                opacity: 1;
-            }
-        }
-
-
-        #closeGlassPanel {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 2rem;
-            color: rgba(255,255,255,0.28);
-            cursor: pointer;
-            z-index: 10;
-            user-select: none;
-            transition: color 0.3s;
-        }
-
-        #closeGlassPanel:hover {
-            color: #fff;
-        }
-
-        .glass-title {
-            width: fit-content;
-            max-width: 80%;
-            margin: 2rem auto;
-            font-size: 25px;
-            color: #fff
-        }
-
-    </style>
+    <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
     <audio id="rollingAudio" src="/sounds/rolling-wheel-sound.mp3"></audio>
+    <audio id="punchAudio" src="/sounds/punch.mp3"></audio>
+    <audio id="spinAudio" src="/sounds/spin.mp3"></audio>
+    <audio id="antecipationAudio" src="/sounds/antecipation.mp3"></audio>
+    <audio id="bgMusic" src="/sounds/bgMusic.mp3" loop></audio>
+
     <div class="container" id="mainContainer">
         <h1 class="title">
             🎁 Caixa Misteriosa do Amor 💕<br>
@@ -564,11 +64,47 @@
         }
 
         function playClickSound() {
-           
+           const punch = document.getElementById('punchAudio');
+           punch.currentTime = 0;
+           punch.play();
+        }
+        
+        function playSpinningSound() {
+           const spin = document.getElementById('spinAudio');
+           spin.currentTime = 0;
+           spin.playbackRate = 1.3;
+           spin.play();
+
+            const pararNo3 = () => {
+                if (spin.currentTime >= 4.5) {
+                    spin.pause();
+                    setTimeout(() => {
+                        spin.currentTime = 0;
+                        spin.playbackRate = 2.5;
+                        spin.play();
+
+                        setTimeout(() => {
+                            spin.pause();
+                            spin.removeEventListener('timeupdate', pararNo3);
+                            playClickSound();
+                        }, 800);
+                    }, 250);
+                }
+            };
+
+            spin.addEventListener('timeupdate', pararNo3);
         }
 
-        function playOpenSound() {
+        function playBgMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.currentTime = 0;
+            bgMusic.play();
+        }
 
+        function playAntecipationSound() {
+            const antecipation = document.getElementById('antecipationAudio');
+            antecipation.currentTime = 0;
+            antecipation.play();
         }
 
         function handleBoxClick() {
@@ -621,24 +157,28 @@
 
         function openBox() {
             gameState = 'opened';
-            playOpenSound();
             
             const cartContainer = document.getElementById('cartContainer');
             cartContainer.style.animation = 'rotateGrowThenReset 5s ease-in-out forwards';
+            
+            playSpinningSound();
 
             setTimeout(() => {
                 const boxImage = document.getElementById('boxImage');
                 boxImage.src = 'images/open-box.png';
 
                 boxImage.classList.add('shake');
+                
+                playAntecipationSound();
 
                 setTimeout(() => {
                     boxImage.classList.remove('shake');
                     setTimeout(() => {
                         boxImage.classList.add('scale-out-center');
                     }, 1000);
+                    playBgMusic();
                     animateImages();
-                }, 3000);
+                }, 4500);
 
             }, 4900);
             
@@ -671,21 +211,76 @@
             "Se pudesse viajar agora, para onde iríamos?"
         ];
 
+
         document.querySelectorAll('.love-image').forEach((img, idx) => {
             img.addEventListener('click', function(e) {
-                const question = loveQuestions[img.getAttribute('data-index')];
-
-                const titleEl = document.getElementsByClassName('glass-title')[0];
-                titleEl.textContent = question;
-
                 img.classList.remove('floating-item');
-                img.classList.add('image-in-focus');
 
-                const glassPanel = document.getElementsByClassName('glass-morph')[0];
-                glassPanel.classList.remove('scale-out-center');
-                glassPanel.classList.add('scale-in-center');
+                // Posição inicial (atual)
+                const imgRect = img.getBoundingClientRect();
+                const scrollX = window.scrollX || window.pageXOffset;
+                const scrollY = window.scrollY || window.pageYOffset;
+                const startLeft = imgRect.left + scrollX;
+                const startTop = imgRect.top + scrollY;
 
+                // Posição final (igual ao CSS .image-in-focus)
+                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+                const leftFinal = (vw / 2) - (Math.max(0.25 * vw, 600) / 2) + 20;
+                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+                const topFinal = vh / 2;
+
+                img.style.left = startLeft + 'px';
+                img.style.top = startTop + 'px';
+
+                // Anima usando animate()
+                img.animate([
+                    {
+                        left: startLeft + 'px',
+                        top: startTop + 'px',
+                        width: imgRect.width + 'px',
+                        transform: 'translateY(0)'
+                    },
+                    {
+                        left: leftFinal + 'px',
+                        top: topFinal + 'px',
+                        transform: 'translateY(-50%)'
+                    }
+                ], {
+                    duration: 1200,
+                    easing: 'cubic-bezier(.4,1.4,.6,1)',
+                    fill: 'forwards'
+                });
+
+                // Após a animação, aplica a classe de foco e limpa inline
+                setTimeout(() => {
+                    img.classList.add('image-in-focus');
+                    
+                    // Mostra o painel
+                    const glassPanel = document.getElementsByClassName('glass-morph')[0];
+                    glassPanel.classList.remove('scale-out-center');
+                    glassPanel.classList.add('scale-in-center');
+
+                    // Atualiza a pergunta
+                    const question = loveQuestions[img.getAttribute('data-index')];
+                    const titleEl = document.getElementsByClassName('glass-title')[0];
+                    titleEl.textContent = question;
+                }, 200);
             });
+
+            // img.addEventListener('click', function(e) {
+            //     const question = loveQuestions[img.getAttribute('data-index')];
+
+            //     const titleEl = document.getElementsByClassName('glass-title')[0];
+            //     titleEl.textContent = question;
+
+            //     img.classList.remove('floating-item');
+            //     img.classList.add('image-in-focus');
+                
+            //     const glassPanel = document.getElementsByClassName('glass-morph')[0];
+            //     glassPanel.classList.remove('scale-out-center');
+            //     glassPanel.classList.add('scale-in-center');
+
+            // });
         });
 
         function closeGlassPanel() {
@@ -753,8 +348,10 @@
                 var startTop = imgRect.top + window.scrollY;
 
                 if (startLeft == 0 && startTop == 0) {
-                    startLeft = stertTop = (centerX - 60) - window.scrollX;
+                    startLeft = (centerX - 60) - window.scrollX;
+                    startTop = (centerY - 20) - window.scrollY;
                 }
+
                 // Posição final (círculo ao redor do carrinho)
                 const angle = (2 * Math.PI * i) / total;
                 const distance = 350;
@@ -765,8 +362,8 @@
                 img.style.position = 'absolute';
                 img.style.left = startLeft + 'px';
                 img.style.top = startTop + 'px';
-                img.style.width = '120px';
-                img.style.zIndex = 2;
+                img.style.width = '200px';
+                img.style.zIndex = 1;
                 img.style.display = 'block';
         
                 // Força reflow para garantir que a posição inicial seja aplicada antes da animação
@@ -789,18 +386,14 @@
                     easing: 'cubic-bezier(.4,1.4,.6,1)',
                     fill: 'forwards'
                 });
-        
+                
+                img.classList.add('floating-item');
+
                 // Após a animação, fixa a posição final
                 setTimeout(() => {
                     img.style.left = finalLeft + 'px';
                     img.style.top = finalTop + 'px';
-                    img.classList.add('floating-item');
                 }, 1200);
-        
-                // Clique para focar
-                img.onclick = function(e) {
-                    // (Aqui você pode colocar o código de foco, se desejar)
-                };
             }
         }
 
@@ -813,7 +406,7 @@
             
             const cartContainer = document.getElementById('cartContainer');
             cartContainer.style.display = 'block';
-            
+            bgMusic.volume = 0.4;
             playMovingSound();
             
             setTimeout(() => {

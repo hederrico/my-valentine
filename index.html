@@ -88,6 +88,7 @@
             transform-origin: bottom center;
             animation: moverCarrinho 4800ms ease-in-out forwards;
             user-select: none;
+            z-index: 2;
         }
 
         @keyframes moverCarrinho {
@@ -152,11 +153,8 @@
         }
 
         .box-image.shake {
-            animation: shake 0.5s ease-in-out;
-        }
-
-        .box-image.opening {
-            animation: opening 1s ease-in-out;
+            -webkit-animation: shake 0.3s linear infinite both;
+            animation: shake 0.3s linear infinite both;
         }
 
         @keyframes fadeIn {
@@ -164,12 +162,59 @@
             to { opacity: 1; }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        @-webkit-keyframes shake {
+            0% {
+                -webkit-transform: translate(0);
+                        transform: translate(0);
+            }
+            20% {
+                -webkit-transform: translate(-2px, 2px);
+                        transform: translate(-2px, 2px);
+            }
+            40% {
+                -webkit-transform: translate(-2px, -2px);
+                        transform: translate(-2px, -2px);
+            }
+            60% {
+                -webkit-transform: translate(2px, 2px);
+                        transform: translate(2px, 2px);
+            }
+            80% {
+                -webkit-transform: translate(2px, -2px);
+                        transform: translate(2px, -2px);
+            }
+            100% {
+                -webkit-transform: translate(0);
+                        transform: translate(0);
+            }
         }
 
+        @keyframes shake {
+            0% {
+                -webkit-transform: translate(0);
+                        transform: translate(0);
+            }
+            20% {
+                -webkit-transform: translate(-2px, 2px);
+                        transform: translate(-2px, 2px);
+            }
+            40% {
+                -webkit-transform: translate(-2px, -2px);
+                        transform: translate(-2px, -2px);
+            }
+            60% {
+                -webkit-transform: translate(2px, 2px);
+                        transform: translate(2px, 2px);
+            }
+            80% {
+                -webkit-transform: translate(2px, -2px);
+                        transform: translate(2px, -2px);
+            }
+            100% {
+                -webkit-transform: translate(0);
+                        transform: translate(0);
+            }
+        }
 
         .heart-explosion {
             position: absolute;
@@ -266,18 +311,36 @@
         }
 
         .floating-item {
-            animation: floatAround 4s ease-in-out infinite;
+            -webkit-animation: pulsate-fwd 2s ease-in-out infinite both;
+	        animation: pulsate-fwd 2s ease-in-out infinite both;
         }
 
-        @keyframes floatAround {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
+        @-webkit-keyframes pulsate-fwd {
+            0% {
+                -webkit-transform: scale(1);
+                        transform: scale(1);
             }
-            33% {
-                transform: translateY(-20px) rotate(120deg);
+            50% {
+                -webkit-transform: scale(1.1);
+                        transform: scale(1.1);
             }
-            67% {
-                transform: translateY(10px) rotate(240deg);
+            100% {
+                -webkit-transform: scale(1);
+                        transform: scale(1);
+            }
+        }
+        @keyframes pulsate-fwd {
+            0% {
+                -webkit-transform: scale(1);
+                        transform: scale(1);
+            }
+            50% {
+                -webkit-transform: scale(1.1);
+                        transform: scale(1.1);
+            }
+            100% {
+                -webkit-transform: scale(1);
+                        transform: scale(1);
             }
         }
 
@@ -311,6 +374,142 @@
         .hidden {
             display: none !important;
         }
+
+        .love-image {
+            width: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            display: none;
+            cursor: pointer;
+            transition: all 300ms ease-in-out;
+        }
+
+        .love-image.floating-item:hover {
+            transform: scale(1.5);
+        }
+
+        .love-image.image-in-focus {
+            left: calc(50% - (max(25vw, 600px) / 2) + 20px) !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: calc(5vw + (max(25vw, 600px) / 4));
+        }
+
+        .glass-morph {
+            background: rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 32px;
+            border: 1.5px solid rgba(255,255,255,0.28);
+            width: max(25vw, 600px);
+            height: max(20vh, 400px);
+            transform: scale(0);
+            position: absolute;
+            transition: transform 3s ease-in-out;
+        }
+
+        .glass-morph::before {
+            content: '';
+            position: absolute;
+            top: -400%;
+            left: -400%;
+            width: 1000vw;
+            height: 1000vh;
+            background: rgba(31, 38, 135, 0.08);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .scale-in-center {
+            -webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+
+        @-webkit-keyframes scale-in-center {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scale-in-center {
+        0% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            opacity: 1;
+        }
+        100% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            opacity: 1;
+        }
+        }
+
+        .scale-out-center {
+            -webkit-animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+            animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+        }
+        
+        @-webkit-keyframes scale-out-center {
+            0% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scale-out-center {
+            0% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+                opacity: 1;
+            }
+        }
+
+
+        #closeGlassPanel {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.28);
+            cursor: pointer;
+            z-index: 10;
+            user-select: none;
+            transition: color 0.3s;
+        }
+
+        #closeGlassPanel:hover {
+            color: #fff;
+        }
+
+        .glass-title {
+            width: fit-content;
+            max-width: 80%;
+            margin: 2rem auto;
+            font-size: 25px;
+            color: #fff
+        }
+
     </style>
 </head>
 <body>
@@ -334,8 +533,18 @@
         Cliques: <span id="clickCount">0</span>/5
     </div>
 
+    <div class="love-images">
+        <img src="images/Ca.webp" alt="Ca" class="love-image" data-index="0">
+        <img src="images/Ri.png" alt="Ri" class="love-image" data-index="1">
+        <img src="images/Cari1.webp" alt="Cari1" class="love-image" data-index="2">
+    </div>
+
+    <div class="glass-morph">
+        <span id="closeGlassPanel" title="Fechar painel" onclick="closeGlassPanel()">x</span>
+        <div class="glass-title"></div>
+    </div>
     <script>
-        let gameState = 'start'; // start, moving, waiting, clicking, opened
+        let gameState = 'start';
         let clickCount = 0;
         let clickTimer = null;
 
@@ -400,7 +609,6 @@
                     }, 200);
                 }
                 
-                // Reset após 1.5 segundos de inatividade
                 setTimeout(() => {
                     if (gameState === 'clicking' && (Date.now() - clickTimer) > 1500) {
                         clickCount = 0;
@@ -420,8 +628,18 @@
 
             setTimeout(() => {
                 const boxImage = document.getElementById('boxImage');
-                boxImage.classList.add('opening');
                 boxImage.src = 'images/open-box.png';
+
+                boxImage.classList.add('shake');
+
+                setTimeout(() => {
+                    boxImage.classList.remove('shake');
+                    setTimeout(() => {
+                        boxImage.classList.add('scale-out-center');
+                    }, 1000);
+                    animateImages();
+                }, 3000);
+
             }, 4900);
             
             // Esconder contador
@@ -444,63 +662,41 @@
             // }, 1500);
         }
 
-        function createSurpriseExplosion() {
-            const surpriseItems = [
-                '🎁', '💝', '🌹', '💌', '🍫', '🧸', '💎', '🎀', 
-                '🌺', '💐', '🦋', '⭐', '✨', '🎊', '🎉', '💖',
-                '🍰', '🥂', '🎵', '🎶', '🌟', '💫', '🔮', '🌈'
-            ];
-            
-            const container = document.getElementById('cartContainer');
-            const rect = container.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            // Criar 30 itens que saem da caixa
-            for (let i = 0; i < 30; i++) {
-                const item = document.createElement('div');
-                item.className = 'surprise-item';
-                
-                // Escolher item aleatório
-                const randomItem = surpriseItems[Math.floor(Math.random() * surpriseItems.length)];
-                item.textContent = randomItem;
-                
-                // Posição inicial (centro da caixa)
-                item.style.left = centerX + 'px';
-                item.style.top = centerY + 'px';
-                
-                // Calcular posição final aleatória
-                const angle = (Math.PI * 2 * Math.random());
-                const distance = 100 + Math.random() * 300;
-                const finalX = centerX + Math.cos(angle) * distance;
-                const finalY = centerY + Math.sin(angle) * distance;
-                
-                // Aplicar transformação
-                item.style.setProperty('--final-x', (finalX - centerX) + 'px');
-                item.style.setProperty('--final-y', (finalY - centerY) + 'px');
-                
-                // Adicionar variação no timing
-                item.style.animationDelay = (i * 50) + 'ms';
-                
-                document.body.appendChild(item);
-                
-                // Após a animação inicial, alguns itens continuam flutuando
-                setTimeout(() => {
-                    if (Math.random() > 0.7) {
-                        item.classList.remove('surprise-item');
-                        item.classList.add('floating-item');
-                        item.style.position = 'fixed';
-                        item.style.left = finalX + 'px';
-                        item.style.top = finalY + 'px';
-                        
-                        // Remover item flutuante após mais tempo
-                        setTimeout(() => {
-                            item.remove();
-                        }, 8000);
-                    } else {
-                        item.remove();
-                    }
-                }, 3000);
+        function createLoveExplosion() {
+        }
+        
+        const loveQuestions = [
+            "Qual a sua lembrança favorita juntos?",
+            "O que mais te faz sorrir em mim?",
+            "Se pudesse viajar agora, para onde iríamos?"
+        ];
+
+        document.querySelectorAll('.love-image').forEach((img, idx) => {
+            img.addEventListener('click', function(e) {
+                const question = loveQuestions[img.getAttribute('data-index')];
+
+                const titleEl = document.getElementsByClassName('glass-title')[0];
+                titleEl.textContent = question;
+
+                img.classList.remove('floating-item');
+                img.classList.add('image-in-focus');
+
+                const glassPanel = document.getElementsByClassName('glass-morph')[0];
+                glassPanel.classList.remove('scale-out-center');
+                glassPanel.classList.add('scale-in-center');
+
+            });
+        });
+
+        function closeGlassPanel() {
+            const imgInFocus = document.querySelector('.image-in-focus');
+            const glassPanel = document.getElementsByClassName('glass-morph')[0];
+            glassPanel.classList.add('scale-out-center');
+            glassPanel.classList.remove('scale-in-center');
+
+            if (imgInFocus) {
+                animateImages(imgInFocus);
+                imgInFocus.classList.remove('image-in-focus');
             }
         }
 
@@ -532,6 +728,79 @@
                 setTimeout(() => {
                     heart.remove();
                 }, 2000);
+            }
+        }
+
+        function animateImages(target = null) {
+            const loveImgs = document.getElementsByClassName('love-image');
+            const total = loveImgs.length;
+        
+            const container = document.getElementById('cartContainer');
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2 + window.scrollX;
+            const centerY = rect.top + rect.height / 2 + window.scrollY;
+        
+            for (let i = 0; i < total; i++) {
+                const img = loveImgs[i];
+        
+                if (target && (img.getAttribute('data-index') != target.getAttribute('data-index'))) {
+                    continue;
+                }
+        
+                // Posição atual da imagem na tela
+                const imgRect = img.getBoundingClientRect();
+                var startLeft = imgRect.left + window.scrollX;
+                var startTop = imgRect.top + window.scrollY;
+
+                if (startLeft == 0 && startTop == 0) {
+                    startLeft = stertTop = (centerX - 60) - window.scrollX;
+                }
+                // Posição final (círculo ao redor do carrinho)
+                const angle = (2 * Math.PI * i) / total;
+                const distance = 350;
+                const finalLeft = centerX + Math.cos(angle) * distance - 60;
+                const finalTop = centerY + Math.sin(angle) * distance - 60;
+        
+                // Aplica posição inicial absoluta para animar de onde está
+                img.style.position = 'absolute';
+                img.style.left = startLeft + 'px';
+                img.style.top = startTop + 'px';
+                img.style.width = '120px';
+                img.style.zIndex = 2;
+                img.style.display = 'block';
+        
+                // Força reflow para garantir que a posição inicial seja aplicada antes da animação
+                void img.offsetWidth;
+        
+                // Anima para o destino final
+                img.animate([
+                    {
+                        left: startLeft + 'px',
+                        top: startTop + 'px',
+                        transform: 'scale(1)'
+                    },
+                    {
+                        left: finalLeft + 'px',
+                        top: finalTop + 'px',
+                        transform: 'scale(1)'
+                    }
+                ], {
+                    duration: 1200,
+                    easing: 'cubic-bezier(.4,1.4,.6,1)',
+                    fill: 'forwards'
+                });
+        
+                // Após a animação, fixa a posição final
+                setTimeout(() => {
+                    img.style.left = finalLeft + 'px';
+                    img.style.top = finalTop + 'px';
+                    img.classList.add('floating-item');
+                }, 1200);
+        
+                // Clique para focar
+                img.onclick = function(e) {
+                    // (Aqui você pode colocar o código de foco, se desejar)
+                };
             }
         }
 

@@ -48,6 +48,26 @@
         let clickCount = 0;
         let clickTimer = null;
 
+        window.addEventListener('DOMContentLoaded', () => {
+            // Remove classes dinâmicas e estilos inline das imagens
+            document.querySelectorAll('.love-image').forEach(img => {
+                img.className = 'love-image'; // mantém só a classe base
+                img.removeAttribute('style');
+            });
+
+            // Remove overlays, painéis e elementos criados via JS
+            document.querySelectorAll('.love-focus-overlay, .glass-morph, .painel-dinamico').forEach(el => el.remove());
+
+            // Reseta containers
+            const cartContainer = document.getElementById('cartContainer');
+            if (cartContainer) {
+                cartContainer.removeAttribute('style');
+                cartContainer.className = 'cart-container'; // ou a classe base do seu HTML
+            }
+
+            // Remova ou resete outros elementos dinâmicos conforme necessário
+        });
+
         function playMovingSound() {
             const audio = document.getElementById('rollingAudio');
             audio.currentTime = 4;
@@ -406,7 +426,6 @@
             
             const cartContainer = document.getElementById('cartContainer');
             cartContainer.style.display = 'block';
-            bgMusic.volume = 0.4;
             playMovingSound();
             
             setTimeout(() => {

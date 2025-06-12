@@ -401,10 +401,10 @@
 
         async function startGame() {
             gameState = 'moving';
-            
             document.getElementById('mainContainer').classList.add('hidden');
             
             const cartContainer = document.getElementById('cartContainer');
+            cartContainer.style.animation = 'moverCarrinho 4000ms ease-in-out forwards';
             cartContainer.style.display = 'block';
             playMovingSound();
             

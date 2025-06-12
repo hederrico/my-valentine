@@ -78,7 +78,6 @@ body::before {
     transform: translateY(-50%) rotate(0deg);
     transition: left 4100ms ease-in-out;
     transform-origin: bottom center;
-    animation: moverCarrinho 4800ms ease-in-out forwards;
     user-select: none;
     z-index: 2;
 }
